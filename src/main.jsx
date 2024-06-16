@@ -1,17 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./components/App/App";
-import "./index.css";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
-import { BrowserRouter } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { changeFilter, selectNameFilter } from "../src/redux/filtersSlice";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
-);
+const SearchBox = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(selectNameFilter);
+
+  return (
+    <input
+      type="text"
+      value={filter}
+      onChange={(e) => dispatch(changeFilter(e.target.value))}
+      placeholder="Search contacts..."
+    />
+  );
+};
+
+export default SearchBox;

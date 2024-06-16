@@ -1,16 +1,22 @@
-import Contact from "../Contact/Contact";
+import { useDispatch } from "react-redux";
+import { deleteContact } from "../../redux/contactsSlice";
 import css from "./ContactList.module.css";
 
-function ContactList({ contacts, onDelete }) {
+const ContactList = ({ contacts }) => {
+  const dispatch = useDispatch();
+
   return (
     <ul className={css.list}>
-      {contacts.map((contact) => (
-        <li className={css.item} key={contact.id}>
-          <Contact data={contact} onDelete={onDelete} />
+      {contacts.map(({ id, name, number }) => (
+        <li key={id} className={css.item}>
+          <p>
+            {name}: {number}
+          </p>
+          <button onClick={() => dispatch(deleteContact(id))}>Delete</button>
         </li>
       ))}
     </ul>
   );
-}
+};
 
 export default ContactList;
