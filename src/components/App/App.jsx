@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { selectContacts } from "../../redux/contactsSlice";
-import ContactsForm from "../ContactForm/ContactForm";
 import ContactList from "../ContactList/ContactList";
 import SearchBox from "../SearchBox/SearchBox";
 import css from "./App.module.css";
+import ContactForm from "../ContactForm/ContactForm";
 
 const App = () => {
   const contacts = useSelector(selectContacts);
@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
-      <ContactsForm />
+      <ContactForm />
       <h2>Contacts</h2>
       <SearchBox />
       <ContactList contacts={contacts} />
