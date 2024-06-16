@@ -12,7 +12,9 @@ const App = () => {
     <div className={css.container}>
       <h1>Phonebook</h1>
       <ContactForm />
+      <hr className={css.line}></hr>
       <SearchBox />
+      <hr className={css.line}></hr>
       <h2>Contacts</h2>
       <ContactList contacts={contacts} />
     </div>
