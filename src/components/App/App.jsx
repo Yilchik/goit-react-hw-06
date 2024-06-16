@@ -1,34 +1,54 @@
-import { Suspense, lazy } from "react";
-import { Route, Routes } from "react-router-dom";
+import "./App.module.css";
+import primaryContacts from "../../contacts.json";
 
-const HomePage = lazy(() => import("../../pages/HomePage/HomePage"));
-const Navigation = lazy(() => import("../Navigation/Navigation"));
-const MoviesPage = lazy(() => import("../../pages/MoviesPage/MoviesPage"));
-const MovieDetailsPage = lazy(() =>
-  import("../../pages/MovieDetailsPage/MovieDetailsPage")
-);
-const NotFoundPage = lazy(() =>
-  import("../../pages/NotFoundPage/NotFoundPage")
-);
-const MovieCast = lazy(() => import("../MovieCast/MovieCast"));
-const MovieReviews = lazy(() => import("../MovieReviews/MovieReviews"));
+import { useEffect, useState } from "react";
+import ContactList from "../ContactList/ContactList";
+import SearchBox from "../SearchBox/SearchBox";
+import ContactForm from "../ContactForm/ContactForm";
 
 function App() {
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(localStorage.getItem("contacts")) || primaryContacts;
+  });
+
+  const [filter, setFilter] = useState("");
+
+  const visibleContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const addContact = (newContact) => {
+    setContacts((prevContact) => {
+      return [...prevContact, newContact];
+    });
+  };
+
+  const deleteContact = (ContactId) => {
+    setContacts((prevContacts) => {
+      return prevContacts.filter((Contact) => Contact.id !== ContactId);
+    });
+  };
+
+  useEffect(() => {
+    const saveContacts = JSON.parse(localStorage.getItem("contacts"));
+    if (saveContacts) {
+      setContacts(saveContacts);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
+
   return (
-    <div>
-      <Navigation />
-      <Suspense fallback={<div>Loading page...</div>}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/movies" element={<MoviesPage />} />
-          <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
-            <Route path="cast" element={<MovieCast />} />
-            <Route path="reviews" element={<MovieReviews />} />
-          </Route>
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
-    </div>
+    <>
+      <div>
+        <h1>Phonebook</h1>
+        <ContactForm addContact={addContact} />
+        <SearchBox value={filter} onFilter={setFilter} />
+        <ContactList contacts={visibleContacts} onDelete={deleteContact} />
+      </div>
+    </>
   );
 }
 
