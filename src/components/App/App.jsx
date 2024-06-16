@@ -12,8 +12,8 @@ const App = () => {
     <div className={css.container}>
       <h1>Phonebook</h1>
       <ContactForm />
-      <h2>Contacts</h2>
       <SearchBox />
+      <h2>Contacts</h2>
       <ContactList contacts={contacts} />
     </div>
   );

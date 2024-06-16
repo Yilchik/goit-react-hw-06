@@ -7,13 +7,15 @@ const SearchBox = () => {
   const filter = useSelector(selectNameFilter);
 
   return (
-    <input
-      type="text"
-      value={filter}
-      onChange={(e) => dispatch(changeFilter(e.target.value))}
-      placeholder="Search contacts..."
-      className={css.input}
-    />
+    <div className={css.container}>
+      <p className={css.label}>Find contacts by name</p>
+      <input
+        className={css.input}
+        type="text"
+        value={filter}
+        onChange={(e) => dispatch(changeFilter(e.target.value))}
+      />
+    </div>
   );
 };
 
