@@ -3,7 +3,6 @@ import { addContact } from "../../redux/contactsSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import css from "./ContactForm.module.css";
 import * as Yup from "yup";
-import { nanoid } from "@reduxjs/toolkit";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -19,18 +18,16 @@ const validationSchema = Yup.object().shape({
 const ContactForm = () => {
   const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const { name, number } = event.target.elements;
+  const handleSubmit = (values, { resetForm }) => {
     dispatch(
-      addContact({ id: Date.now(), name: name.value, number: number.value })
+      addContact({ id: Date.now(), name: values.name, number: values.number })
     );
-    event.target.reset();
+    resetForm();
   };
 
   return (
     <Formik
-      initialValues={{ id: nanoid(), name: "", number: "" }}
+      initialValues={{ name: "", number: "" }}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
